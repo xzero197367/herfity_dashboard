@@ -1,32 +1,47 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
-import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react" // icons
+import { Button } from '@/components/ui/button'
+import type { ColumnDef } from '@tanstack/react-table'
+import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react' // icons
 
 export function createSortableMainTableColumn<TData>(
   header: string,
-  accessorKey: string
+  accessorKey: string,
+  cell?: (
+    info: any
+  ) =>
+    | JSX.Element
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | React.ReactNode
 ): ColumnDef<TData> {
   return {
     accessorKey,
     header: ({ column }) => {
-      const isSorted = column.getIsSorted(); // ممكن يكون "asc" | "desc" | false
+      const isSorted = column.getIsSorted() // ممكن يكون "asc" | "desc" | false
 
       return (
         <Button
-          variant="ghost"
-          className="m-0 p-0 w-full flex justify-start"
-          onClick={() => column.toggleSorting(isSorted === "asc")}
+          variant='ghost'
+          className='m-0 p-0 w-full flex justify-start'
+          onClick={() => column.toggleSorting(isSorted === 'asc')}
         >
           {header}
-          {isSorted === "asc" && <ArrowUp className="ml-2 h-4 w-4" />}
-          {isSorted === "desc" && <ArrowDown className="ml-2 h-4 w-4" />}
-          {!isSorted && <ArrowUpDown className="ml-2 h-4 w-4" />}
+          {isSorted === 'asc' && <ArrowUp className='ml-2 h-4 w-4' />}
+          {isSorted === 'desc' && <ArrowDown className='ml-2 h-4 w-4' />}
+          {!isSorted && <ArrowUpDown className='ml-2 h-4 w-4' />}
         </Button>
-      );
+      )
     },
-  };
+    cell: cell
+      ? cell
+      : ({ getValue }) => {
+          return getValue()
+        },
+  }
 }
 
 // Helper function to create a basic column
@@ -37,5 +52,5 @@ export function createMainTableColumn<TData, TValue>(
   return {
     accessorKey,
     header,
-  };
+  }
 }

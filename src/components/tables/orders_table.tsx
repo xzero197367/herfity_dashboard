@@ -1,47 +1,62 @@
-import { createSortableColumn, createColumn } from "./data-table/columns";
-import { DataTable } from "./data-table/data_table";
+import { ColumnDef } from '@tanstack/react-table'
+import { MainTable } from './main_table/main_table'
+import { createSortableMainTableColumn } from './main_table/main_table_column'
+import { createSelectColumn } from './main_table/main_table_select_column'
 
-// Example usage
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  status: string;
-};
+type Order = {
+  id: string
+  name: string
+  order_date: string
+  order_type: string
+  tracking_id: string
+  action: string
+  status: string
+}
 
-const columns = [
-  createSortableColumn<User, string>("Name", "name"),
-  createColumn<User, string>("Email", "email"),
-  createSortableColumn<User, string>("Role", "role"),
-  createColumn<User, string>("Status", "status"),
-];
-
-const data: User[] = [
+const data: Order[] = [
   {
-    id: "1",
-    name: "John Doe",
-    email: "john@example.com",
-    role: "Admin",
-    status: "Active",
+    id: '1',
+    name: 'John Doe',
+    order_date: '1/1/2023 12:00 AM',
+    order_type: 'Home Delivery',
+    tracking_id: '123456',
+    action: 'Completed',
+    status: 'Completed',
   },
   {
-    id: "2",
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "User",
-    status: "Inactive",
+    id: '2',
+    name: 'Jane Smith',
+    order_date: '1/1/2023 12:00 AM',
+    order_type: 'Home Delivery',
+    tracking_id: '123456',
+    action: 'Completed',
+    status: 'Completed',
   },
   // Add more data as needed
-];
+]
+
+const columns: ColumnDef<Order>[] = [
+  createSelectColumn<Order>(),
+  createSortableMainTableColumn<Order>('Customer Name', 'name'),
+  createSortableMainTableColumn<Order>('Order Date', 'order_date'),
+  createSortableMainTableColumn<Order>('Order Type', 'order_type'),
+  createSortableMainTableColumn<Order>('Tracking ID', 'tracking_id'),
+  createSortableMainTableColumn<Order>('Action', 'action', (cell) => {
+    return (
+      <span className='bg-green-500/80 text-white p-2 font-bold rounded-lg'>
+        {cell.getValue()}
+      </span>
+    )
+  }),
+  createSortableMainTableColumn<Order>('Status', 'status', (cell) => {
+    return (
+      <span className='bg-green-500/60 text-white p-2 font-bold rounded-lg'>
+        {cell.getValue()}
+      </span>
+    )
+  }),
+]
 
 export function OrdersTable() {
-  return (
-    <DataTable
-      columns={columns}
-      data={data}
-      searchKey="name"
-      pageSizeOptions={[5, 10, 20, 30]}
-    />
-  );
+  return <MainTable title='Orders' data={data} columns={columns} />
 }
