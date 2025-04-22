@@ -4,6 +4,7 @@ import { TableSearchInput } from "./table_search_input";
 import { TableShareBtn } from "./table_share_btn";
 import { TableActionTable } from "./table_action_menu";
 import { Table } from "@tanstack/react-table";
+import { TableFilterCalenderButton } from "./table_filter_callender_btn";
 
 interface MainTableHeaderProps<T> {
     title?: string,
@@ -18,6 +19,7 @@ export function MainTableHeader<T>({title, table}: MainTableHeaderProps<T>){
         <div className="flex flex-row gap-1 align-middle">
             <TableSearchInput table={table} searchColName="name" placeholder="Search by name"/>
             <TableFilterButton/>
+            <TableFilterCalenderButton/>
             <TableShareBtn/>
             <TableActionTable/>
         </div>
